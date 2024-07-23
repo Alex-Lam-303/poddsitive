@@ -4,3 +4,10 @@ env/
 .env/
 
 *.env
+
+# Ignore Node.js modules
+node_modules/
+
+# Ignore Python cache directories
+__pycache__/
+*.pyc
