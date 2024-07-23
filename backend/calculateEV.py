@@ -10,6 +10,8 @@ def process_data_to_sql(data):
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS events (
             game_id TEXT,
+            last_update DATETIME,
+            sport_key TEXT,
             commence_time TEXT,
             sportsbook TEXT,
             market TEXT,
@@ -24,13 +26,16 @@ def process_data_to_sql(data):
     for odds in processed_data:
         cursor.execute('''
             INSERT INTO events (
-                game_id, commence_time, sportsbook, market, team, price, line, home_team, away_team
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (odds['game_id'], odds['commence_time'], odds['sportsbook'], odds['market'], odds['team'], odds['price'], odds['line'], odds['home_team'], odds['away_team']))
+                game_id, last_update, sport_key, commence_time, sportsbook, market, team, price, line, home_team, away_team
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (odds['game_id'], odds['last_update'], odds['sport_key'], odds['commence_time'], odds['sportsbook'], odds['market'], odds['team'], odds['price'], odds['line'], odds['home_team'], odds['away_team']))
 
     cursor.execute('''
         WITH market_data AS (
             SELECT
+                game_id,
+                last_update,
+                sport_key,
                 commence_time,
                 home_team,
                 away_team,
@@ -50,7 +55,7 @@ def process_data_to_sql(data):
                 market,
                 line,
                 team,
-                AVG(implied_odds) AS avg_implied_odds,
+                1/price AS avg_implied_odds,
                 (AVG(implied_odds) - (1.0 / price)) AS expected_ev
             FROM
                 market_data
@@ -58,6 +63,8 @@ def process_data_to_sql(data):
                 home_team, away_team, market, line, team
         )
         SELECT
+            md.sport_key,
+            MAX(md.last_update) AS last_update,
             md.commence_time,
             md.home_team,
             md.away_team,
@@ -86,10 +93,11 @@ def process_data_to_sql(data):
             AND md.line = ev.line
             AND md.team = ev.team
         GROUP BY
-            md.commence_time, md.home_team, md.away_team, md.market, ev.avg_implied_odds, ev.expected_ev
+            md.sport_key, md.commence_time, md.home_team, md.away_team, md.market, md.line, ev.avg_implied_odds, ev.expected_ev
         ORDER BY
             ev.expected_ev DESC;
     ''')
+    
     positive_ev_bets = cursor.fetchall()
 
     conn.close()
