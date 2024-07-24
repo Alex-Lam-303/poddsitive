@@ -15,8 +15,8 @@ const MyApp = () => (
     }}
   >
     <App>
-      <AppHeader />
-      <AppContent />
+      <AppHeader style={{ height: "10vh" }} />
+      <AppContent style={{ height: "90vh" }} />
     </App>
   </ConfigProvider>
 );

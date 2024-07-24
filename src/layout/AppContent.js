@@ -6,7 +6,7 @@ const { Content } = Layout;
 
 const AppContent = () => {
   return (
-    <Content style={{}}>
+    <Content>
       <Dashboard />
     </Content>
   );

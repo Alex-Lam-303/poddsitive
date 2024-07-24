@@ -208,12 +208,10 @@ class MainTable extends Component {
     return (
       <div
         style={{
+          marginLeft: "1%",
           width: "98%",
           overflow: "auto",
-          height: "78vh",
-          position: "absolute",
-          right: 0,
-          bottom: 0,
+          height: "80%",
         }}
       >
         <Table
@@ -222,7 +220,7 @@ class MainTable extends Component {
           rowKey="game_id"
           pagination={false}
           scroll={{
-            y: "75vh",
+            y: "70vh",
           }}
         />
       </div>

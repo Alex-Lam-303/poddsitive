@@ -9,18 +9,17 @@ const AppHeader = () => {
     <Header
       style={{
         background: "#343a4e",
-        height: "8vh",
         display: "flex",
         alignItems: "center",
         padding: "0 10px",
       }}
     >
       <img
-        style={{ height: "7vh", paddingRight: "10px" }}
+        style={{ height: "100%", paddingRight: "10px" }}
         src={poddsitiveLogo}
         alt="Poddsitive"
       />
-      <div style={{ height: "7vh", flex: 1 }}>
+      <div style={{ flex: 1 }}>
         <Menu
           mode="horizontal"
           defaultSelectedKeys={["1"]}
