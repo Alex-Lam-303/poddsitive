@@ -1,14 +1,12 @@
 .App {
   text-align: center;
+  background-color: #343a4e;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.ant-table .ant-table-container {
+  border: #f0f0f0 solid 1px;
+}
+.ant-table-content table thead.ant-table-thead .ant-table-cell {
+  background-color: #499824;
+  color: #f0f0f0;
 }

@@ -1,21 +1,24 @@
 import "./App.css";
-import Dashboard from "./pages/Dashboard";
-import poddsitiveLogo from "./assets/poddsitive_icons/dark_with_name.png";
+import { App, ConfigProvider } from "antd";
+import React from "react";
+import AppHeader from "./layout/AppHeader";
+import AppContent from "./layout/AppContent";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img
-          style={{ width: "250px", marginBottom: "25px" }}
-          src={poddsitiveLogo}
-          alt="Poddsitive"
-        />
+const MyApp = () => (
+  <ConfigProvider
+    theme={{
+      token: {
+        // Seed Token
+        colorPrimary: "#499824",
+        //colorBgContainer: "#f6ffed",
+      },
+    }}
+  >
+    <App>
+      <AppHeader />
+      <AppContent />
+    </App>
+  </ConfigProvider>
+);
 
-        <Dashboard />
-      </header>
-    </div>
-  );
-}
-
-export default App;
+export default MyApp;

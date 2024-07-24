@@ -1,5 +1,39 @@
 from datetime import datetime
 
+teamMap = {
+    "Arizona Diamondbacks": "AZ",
+    "Atlanta Braves": "ATL",
+    "Baltimore Orioles": "BAL",
+    "Boston Red Sox": "BOS",
+    "Chicago Cubs": "CHC",
+    "Chicago White Sox": "CWS",
+    "Cincinnati Reds": "CIN",
+    "Cleveland Guardians": "CLE",
+    "Colorado Rockies": "COL",
+    "Detroit Tigers": "DET",
+    "Houston Astros": "HOU",
+    "Kansas City Royals": "KC",
+    "Los Angeles Angels": "LAA",
+    "Los Angeles Dodgers": "LAD",
+    "Miami Marlins": "MIA",
+    "Milwaukee Brewers": "MIL",
+    "Minnesota Twins": "MIN",
+    "New York Mets": "NYM",
+    "New York Yankees": "NYY",
+    "Oakland Athletics": "OAK",
+    "Philadelphia Phillies": "PHI",
+    "Pittsburgh Pirates": "PIT",
+    "San Diego Padres": "SD",
+    "San Francisco Giants": "SF",
+    "Seattle Mariners": "SEA",
+    "St. Louis Cardinals": "STL",
+    "Tampa Bay Rays": "TB",
+    "Texas Rangers": "TEX",
+    "Toronto Blue Jays": "TOR",
+    "Washington Nationals": "WSH",
+}
+
+
 def iso_to_dt(iso_str):
     return datetime.fromisoformat(iso_str.replace("Z", "+00:00"))
 
@@ -49,7 +83,7 @@ def format_data(odds_info, line):
             "market": "Total",
             "team": outcome["name"],
             "point": outcome["point"],
-            "line": outcome["name"] + " " + str(outcome["point"]),
+            "line": teamMap[odds_info["home_team"]] + " vs " + teamMap[odds_info["away_team"]] + "\n" + str(outcome["name"]) + " " + str(outcome["point"]),
             "price": outcome["price"],
             "home_team": odds_info["home_team"],
             "away_team": odds_info["away_team"],

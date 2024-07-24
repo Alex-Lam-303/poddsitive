@@ -14,7 +14,8 @@ ODDS_FORMAT = 'decimal'
 DATE_FORMAT = 'iso'
 
 def fetch_data():
-   """  url = f'https://api.the-odds-api.com/v4/sports/{SPORT}/odds'
+    """
+    url = f'https://api.the-odds-api.com/v4/sports/{SPORT}/odds'
     response = requests.get(
         url,
         params={
@@ -25,10 +26,12 @@ def fetch_data():
             'dateFormat': DATE_FORMAT
         }
     )
-
+    print(response.json())
     if response.status_code != 200:
         print(f'Failed to get events: status_code {response.status_code}, response body {response.text}')
         return []
     else:
-        return response.json() """
-   return json.load(open('rawData.json'))
+        return response.json()
+    """
+    return json.load(open('rawData.json'))
+    

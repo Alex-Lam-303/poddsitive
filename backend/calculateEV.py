@@ -26,9 +26,9 @@ def process_data_to_sql(data):
     for odds in processed_data:
         cursor.execute('''
             INSERT INTO events (
-                game_id, last_update, sport_key, commence_time, sportsbook, market, team, price, line, home_team, away_team
+                game_id, last_update, sport_key, commence_time, home_team, away_team, market, team, price, line, sportsbook
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (odds['game_id'], odds['last_update'], odds['sport_key'], odds['commence_time'], odds['sportsbook'], odds['market'], odds['team'], odds['price'], odds['line'], odds['home_team'], odds['away_team']))
+        ''', (odds['game_id'], odds['last_update'], odds['sport_key'], odds['commence_time'], odds['home_team'], odds['away_team'], odds['market'], odds['team'], odds['price'], odds['line'], odds['sportsbook']))
 
     cursor.execute('''
         WITH market_data AS (
@@ -50,17 +50,19 @@ def process_data_to_sql(data):
         ),
         ev_calculation AS (
             SELECT
+                game_id,
                 home_team,
                 away_team,
+                commence_time, 
                 market,
                 line,
                 team,
-                1/price AS avg_implied_odds,
-                (AVG(implied_odds) - (1.0 / price)) AS expected_ev
+                AVG(implied_odds) AS avg_implied_odds,
+                (MAX(price)-1/AVG(implied_odds)) AS max_ev
             FROM
                 market_data
             GROUP BY
-                home_team, away_team, market, line, team
+                game_id, home_team, away_team, commence_time, market, line, team
         )
         SELECT
             md.sport_key,
@@ -71,7 +73,7 @@ def process_data_to_sql(data):
             md.market,
             md.line,
             ROUND(ev.avg_implied_odds * 100, 2) AS "Implied Odds",
-            ROUND(ev.expected_ev * 100, 2) AS "Expected EV",
+            ROUND(ev.max_ev, 2) AS "Positive EV",
             MAX(CASE WHEN md.sportsbook = 'FanDuel' THEN md.price ELSE NULL END) AS FanDuel,
             MAX(CASE WHEN md.sportsbook = 'DraftKings' THEN md.price ELSE NULL END) AS DraftKings,
             MAX(CASE WHEN md.sportsbook = 'BetMGM' THEN md.price ELSE NULL END) AS BetMGM,
@@ -87,15 +89,17 @@ def process_data_to_sql(data):
         JOIN
             ev_calculation ev
         ON
-            md.home_team = ev.home_team
+            md.game_id = ev.game_id
+            AND md.home_team = ev.home_team
             AND md.away_team = ev.away_team
+            AND md.commence_time = ev.commence_time
             AND md.market = ev.market
             AND md.line = ev.line
             AND md.team = ev.team
         GROUP BY
-            md.sport_key, md.commence_time, md.home_team, md.away_team, md.market, md.line, ev.avg_implied_odds, ev.expected_ev
+            md.sport_key, md.commence_time, md.home_team, md.away_team, md.market, md.line, ev.avg_implied_odds, ev.max_ev
         ORDER BY
-            ev.expected_ev DESC;
+            ev.max_ev DESC;
     ''')
     
     positive_ev_bets = cursor.fetchall()

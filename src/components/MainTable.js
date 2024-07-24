@@ -1,5 +1,5 @@
-import React from "react";
-import { Table, Button, Tag, Select, Input, Tooltip } from "antd";
+import React, { Component } from "react";
+import { Table, Tag, Tooltip } from "antd";
 import {
   fanduel_icon,
   draftkings_icon,
@@ -11,24 +11,16 @@ import {
   betus_icon,
   lowvig_ag_icon,
   betonline_ag_icon,
-} from "../assets/icons";
-import { sportsMap } from "../constants/sportsMap";
+  sportsbookIconMap,
+} from "../assets/sportsbook_icons";
+import { sportsIconMap } from "../assets/sports_icons";
+import { gradeColorMap, gradeMap } from "../constants/gradeMap";
+import { convertDecimalToAmericanOdds } from "../api/odds";
 import "./MainTable.css";
 
-class MainTable extends React.Component {
+class MainTable extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      odds: [],
-      hiddenColumns: [
-        "commence_date",
-        "commence_time",
-        "home_team",
-        "away_team",
-      ],
-      hiddenSportsbooks: [],
-      decimalOdds: true,
-    };
   }
 
   sportsbooks = [
@@ -53,13 +45,12 @@ class MainTable extends React.Component {
       ),
       dataIndex: dataIndex,
       key: dataIndex,
-      hidden: this.state.hiddenSportsbooks.includes(dataIndex),
+      width: 80,
+      hidden: this.props.hiddenSportsbooks.includes(dataIndex),
       render: (text) =>
         text ? (
           <span>
-            {this.state.decimalOdds
-              ? text
-              : this.convertDecimalToAmericanOdds(text)}
+            {this.props.decimalOdds ? text : convertDecimalToAmericanOdds(text)}
           </span>
         ) : null,
     }));
@@ -67,252 +58,174 @@ class MainTable extends React.Component {
 
   get columns() {
     return [
-      {
-        title: "Live",
-        dataIndex: "live",
-        key: "live",
-        render: (live) => (live ? <Tag color="red">LIVE</Tag> : null),
-        hidden: this.state.hiddenColumns.includes("live"),
-      },
+      /* 
       {
         title: "Last Updated",
         dataIndex: "last_updated",
         key: "last_updated",
-        hidden: this.state.hiddenColumns.includes("last_updated"),
-      },
+        hidden: this.props.hiddenColumns.includes("last_updated"),
+      }, */
       {
         title: "Sport",
         dataIndex: "sport",
         key: "sport",
-        hidden: this.state.hiddenColumns.includes("sport"),
+        width: 70,
+        fixed: "left",
+        hidden: this.props.hiddenColumns.includes("sport"),
+        render: (text) => (
+          <Tooltip title={text}>
+            <div>
+              <img
+                className="sportsbook_icon"
+                src={sportsIconMap[text]}
+                alt={text}
+              />
+            </div>
+          </Tooltip>
+        ),
       },
       {
-        title: "Date",
-        dataIndex: "commence_date",
-        key: "commence_date",
-        hidden: this.state.hiddenColumns.includes("commence_date"),
-      },
-      {
-        title: "Time",
-        dataIndex: "commence_time",
-        key: "commence_time",
-        hidden: this.state.hiddenColumns.includes("commence_time"),
+        title: "Start Time",
+        dataIndex: "commence_datetime",
+        key: "commence_datetime",
+        width: 150,
+        hidden: this.props.hiddenColumns.includes("commence_datetime"),
+        render: (text) => {
+          const now = new Date();
+          const date = new Date(text);
+          return (
+            <span>
+              {now > date ? (
+                <Tooltip title="Live odds constantly change. Odds shown may have changed since the last update.">
+                  <Tag color="red">LIVE</Tag>
+                </Tooltip>
+              ) : null}
+              <br />
+              {date.toLocaleString("en-US", {
+                month: "numeric",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true,
+              })}
+            </span>
+          );
+        },
       },
       {
         title: "Home Team",
         dataIndex: "home_team",
         key: "home_team",
-        hidden: this.state.hiddenColumns.includes("home_team"),
+        width: 170,
+        hidden: this.props.hiddenColumns.includes("home_team"),
       },
       {
         title: "Away Team",
         dataIndex: "away_team",
         key: "away_team",
-        hidden: this.state.hiddenColumns.includes("away_team"),
+        width: 170,
+        hidden: this.props.hiddenColumns.includes("away_team"),
       },
       {
         title: "Market",
         dataIndex: "market",
         key: "market",
-        hidden: this.state.hiddenColumns.includes("market"),
+        width: 100,
+        hidden: this.props.hiddenColumns.includes("market"),
       },
       {
         title: "Line",
         dataIndex: "line",
         key: "line",
-        hidden: this.state.hiddenColumns.includes("line"),
+        width: 200,
+        hidden: this.props.hiddenColumns.includes("line"),
+        fixed: "left",
       },
       {
         title: "Probability",
         dataIndex: "probability",
         key: "probability",
+        width: 108,
+        hidden: this.props.hiddenColumns.includes("probability"),
         render: (text) => <span>{text}%</span>,
-        hidden: this.state.hiddenColumns.includes("probability"),
+      },
+      {
+        title: "Pick",
+        dataIndex: "pick",
+        key: "pick",
+        width: 65,
+        fixed: "left",
+        hidden: this.props.hiddenColumns.includes("pick"),
+        render: (text) =>
+          text.map((pick) => {
+            const icon = sportsbookIconMap[pick];
+            return icon ? (
+              <Tooltip title={pick}>
+                <div>
+                  <img className="sportsbook_icon" src={icon} alt={pick} />
+                </div>
+              </Tooltip>
+            ) : null;
+          }),
       },
       {
         title: "Implied Odds",
         dataIndex: "implied_odds",
         key: "implied_odds",
+        width: 130,
+        fixed: "left",
+        hidden: this.props.hiddenColumns.includes("implied_odds"),
         render: (text) => (
           <span>
-            {this.state.decimalOdds
-              ? text
-              : this.convertDecimalToAmericanOdds(text)}
+            {this.props.decimalOdds ? text : convertDecimalToAmericanOdds(text)}
           </span>
         ),
-        hidden: this.state.hiddenColumns.includes("implied_odds"),
       },
       {
-        title: "Positive EV",
+        title: "+EV%",
         dataIndex: "positive_ev",
         key: "positive_ev",
+        width: 75,
+        fixed: "left",
+        hidden: this.props.hiddenColumns.includes("positive_ev"),
         render: (text) => (
-          <Tag color={text > 0 ? "green" : text < 0 ? "red" : "grey"}>
-            {text}%
-          </Tag>
+          <Tag color={gradeColorMap[gradeMap(parseFloat(text))]}>{text}%</Tag>
         ),
       },
       {
         title: "Grade",
         dataIndex: "grade",
         key: "grade",
-        render: (text) => (
-          <Tag
-            color={
-              text === "S"
-                ? "#009c1a"
-                : text === "A+"
-                ? "#22b600"
-                : text === "A"
-                ? "#22b600"
-                : text === "A-"
-                ? "#26cc00"
-                : text === "B"
-                ? "#7be382"
-                : text === "C"
-                ? "#accb9f"
-                : text === "D"
-                ? "#8a9287"
-                : "red"
-            }
-          >
-            {text}
-          </Tag>
-        ),
+        width: 80,
+        hidden: this.props.hiddenColumns.includes("grade"),
+        render: (text) => <Tag color={gradeColorMap[text]}>{text}</Tag>,
       },
       ...this.sportsbookColumns,
     ];
   }
 
-  convertDecimalToAmericanOdds = (decimalOdds) => {
-    decimalOdds = parseFloat(decimalOdds);
-    if (decimalOdds >= 2.0) {
-      return "+" + String(Math.round((decimalOdds - 1) * 100));
-    } else {
-      return String(Math.round(-100 / (decimalOdds - 1)));
-    }
-  };
-
-  transformOdds = (oddsData) => {
-    const date = new Date();
-    return oddsData.map((odds) => {
-      const commenceDateTime = new Date(odds[0]);
-      const commence_date = commenceDateTime.toLocaleDateString();
-      const commence_time = commenceDateTime.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-
-      return {
-        sport: sportsMap[odds[0]],
-        live: date > new Date(odds[1]),
-        last_updated: new Date(odds[1]).toLocaleString(),
-        commence_date,
-        commence_time,
-        home_team: odds[3],
-        away_team: odds[4],
-        market: odds[5],
-        line: odds[6],
-        probability: odds[7],
-        implied_odds: Math.round(((1 / odds[7]) * 100 + 1) * 100) / 100,
-        positive_ev: odds[8],
-        grade:
-          odds[8] > 5
-            ? "S"
-            : odds[8] > 4
-            ? "A+"
-            : odds[8] > 3
-            ? "A"
-            : odds[8] > 2
-            ? "A-"
-            : odds[8] > 1
-            ? "B"
-            : odds[8] > 0.5
-            ? "C"
-            : odds[8] > 0
-            ? "D"
-            : "F",
-        fanduel: odds[9],
-        draftkings: odds[10],
-        betmgm: odds[11],
-        caesars: odds[12],
-        betrivers: odds[13],
-        mybookie_ag: odds[14],
-        bovada: odds[15],
-        betus: odds[16],
-        lowvig_ag: odds[17],
-        betonline_ag: odds[18],
-      };
-    });
-  };
-
-  getOdds = () => {
-    fetch("http://127.0.0.1:5000/get-odds")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(this.transformOdds(data));
-        this.setState({ odds: this.transformOdds(data) });
-      });
-  };
-
-  componentDidMount() {
-    this.getOdds();
-  }
-
   render() {
     return (
-      <>
-        <Button
-          onClick={() =>
-            this.setState({ decimalOdds: !this.state.decimalOdds })
-          }
-        >
-          {this.state.decimalOdds ? "Decimal" : "American"}
-        </Button>
-        <Input style={{ width: "25%" }} placeholder="Search" />
-        <Select
-          style={{ width: "10%" }}
-          mode="multiple"
-          placeholder="Hidden Columns"
-          value={this.state.hiddenColumns}
-          onChange={(value) => this.setState({ hiddenColumns: value })}
-        >
-          <Select.Option value="sport">Sport</Select.Option>
-          <Select.Option value="commence_date">Date</Select.Option>
-          <Select.Option value="commence_time">Time</Select.Option>
-          <Select.Option value="home_team">Home Team</Select.Option>
-          <Select.Option value="away_team">Away Team</Select.Option>
-          <Select.Option value="market">Market</Select.Option>
-          <Select.Option value="line">Line</Select.Option>
-          <Select.Option value="probability">Probability</Select.Option>
-          <Select.Option value="implied_odds">Implied Odds</Select.Option>
-          <Select.Option value="positive_ev">Positive EV</Select.Option>
-        </Select>
-        <Select
-          style={{ width: "10%" }}
-          mode="multiple"
-          maxTagCount={0}
-          placeholder="Sportsbooks"
-          value={this.state.hiddenSportsbooks}
-          onChange={(value) =>
-            this.setState({
-              hiddenSportsbooks: value,
-            })
-          }
-        >
-          {this.sportsbooks.map(({ icon, alt, dataIndex }) => (
-            <Select.Option value={dataIndex}>{alt}</Select.Option>
-          ))}
-        </Select>
-        <div style={{ height: "75vh", overflow: "auto" }}>
-          <Table
-            columns={this.columns}
-            dataSource={this.state.odds}
-            rowKey="game_id"
-            pagination={false}
-          />
-        </div>
-      </>
+      <div
+        style={{
+          width: "98%",
+          overflow: "auto",
+          height: "78vh",
+          position: "absolute",
+          right: 0,
+          bottom: 0,
+        }}
+      >
+        <Table
+          columns={this.columns}
+          dataSource={this.props.odds}
+          rowKey="game_id"
+          pagination={false}
+          scroll={{
+            y: "75vh",
+          }}
+        />
+      </div>
     );
   }
 }

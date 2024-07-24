@@ -27,3 +27,16 @@ export const lowvig_ag_icon =
 
 export const betonline_ag_icon =
   "https://sportsbookaudit.com/wp-content/uploads/2020/04/betonlinelogo.png";
+
+export const sportsbookIconMap = {
+  FanDuel: fanduel_icon,
+  DraftKings: draftkings_icon,
+  BetMGM: betmgm_icon,
+  Caesars: caesars_icon,
+  BetRivers: betrivers_icon,
+  "MyBookie.ag": mybookie_ag_icon,
+  Bovada: bovada_icon,
+  BetUS: betus_icon,
+  "LowVig.ag": lowvig_ag_icon,
+  "BetOnline.ag": betonline_ag_icon,
+};
