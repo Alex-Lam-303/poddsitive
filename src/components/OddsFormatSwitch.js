@@ -9,7 +9,7 @@ const OddsFormatSwitch = ({ decimalOdds, onChangeOddsFormat }) => {
         unCheckedChildren="American"
         checkedChildren="Decimal"
         style={{
-          backgroundColor: decimalOdds ? "#499824" : "",
+          backgroundColor: decimalOdds ? "#499824" : "#343a4e",
         }}
         onChange={(value) => onChangeOddsFormat(value)}
       >

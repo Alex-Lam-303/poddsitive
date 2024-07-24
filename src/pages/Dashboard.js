@@ -1,21 +1,28 @@
 import React from "react";
 import { Row, Col } from "antd";
-import { getOdds } from "../api/dashboard";
-import { transformOdds } from "../api/odds";
+import { getOdds, transformOdds } from "../api/odds";
 import MainTable from "../components/MainTable";
 import HiddenSelector from "../components/HiddenSelector";
 import OddsFormatSwitch from "../components/OddsFormatSwitch";
 import RefreshOdds from "../components/RefreshOdds";
+import OddsOptions from "../components/OddsOptions";
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      refreshOddsDate: new Date("July 24, 2024, 17:45"),
+      decimalOdds: true,
+      refreshOddsDate: new Date("July 24, 2024, 18:00"),
       odds: [],
       hiddenColumns: ["home_team", "away_team", "market", "grade"],
       hiddenSportsbooks: [],
-      decimalOdds: true,
+      oddsOptions: {
+        sport: ["baseball_mlb"],
+        markets: ["h2h"],
+        regions: "us",
+        odds_format: "decimal",
+        date_format: "iso",
+      },
     };
   }
 
@@ -45,6 +52,15 @@ class Dashboard extends React.Component {
     this.setState({ decimalOdds: value });
   };
 
+  onChangeOddOptions = (value, key) => {
+    this.setState((prevState) => ({
+      oddsOptions: {
+        ...prevState.oddsOptions,
+        [key]: value,
+      },
+    }));
+  };
+
   render() {
     return (
       <>
@@ -54,12 +70,14 @@ class Dashboard extends React.Component {
             height: "20%",
           }}
         >
-          <Row>
-            <Col span={18}>
-              <OddsFormatSwitch
-                decimalOdds={this.state.decimalOdds}
-                onChangeOddsFormat={this.onChangeOddsFormat}
-              />
+          <Row gutter={30}>
+            <Col span={12}>
+              <Row style={{ marginLeft: 5, marginBottom: 10 }}>
+                <OddsFormatSwitch
+                  decimalOdds={this.state.decimalOdds}
+                  onChangeOddsFormat={this.onChangeOddsFormat}
+                />
+              </Row>
               <HiddenSelector
                 hiddenColumns={this.state.hiddenColumns}
                 hiddenSportsbooks={this.state.hiddenSportsbooks}
@@ -67,8 +85,21 @@ class Dashboard extends React.Component {
                 onChangeHiddenSportsbooks={this.onChangeHiddenSportsbooks}
               />
             </Col>
-            <Col span={6}>
-              <RefreshOdds refreshOddsDate={this.state.refreshOddsDate} />
+            <Col span={12}>
+              <Row gutter={30}>
+                <Col span={20} style={{ marginTop: 5 }}>
+                  <OddsOptions
+                    oddsOptions={this.state.oddsOptions}
+                    onChangeOddOptions={this.onChangeOddOptions}
+                  />
+                </Col>
+                <Col span={4} style={{ marginTop: 45 }}>
+                  <RefreshOdds
+                    fetchOdds={this.fetchOdds}
+                    refreshOddsDate={this.state.refreshOddsDate}
+                  />
+                </Col>
+              </Row>
             </Col>
           </Row>
         </div>
