@@ -123,15 +123,15 @@ function processDataToSQL(data) {
         [],
         (err, rows) => {
           if (err) {
-            reject(err); // Reject the promise on error
+            reject(err);
           } else {
-            resolve(rows); // Resolve the promise with the rows
+            resolve(rows);
           }
         }
       );
     });
 
-    db.close(); // Close the database connection
+    db.close();
   });
 }
 

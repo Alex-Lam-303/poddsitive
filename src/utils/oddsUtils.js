@@ -12,6 +12,7 @@ export const convertDecimalToAmericanOdds = (decimalOdds) => {
 };
 
 export const transformOdds = (oddsData) => {
+  console.log(oddsData[0]);
   return oddsData.map((odds) => {
     const sport = sportsMap[odds.sport_key];
     const last_updated = odds.last_update;
@@ -23,7 +24,7 @@ export const transformOdds = (oddsData) => {
     const probability = odds.Implied_Odds;
     const implied_odds = Math.round((1 / probability) * 100 * 100) / 100;
     const positive_ev = odds.Positive_EV;
-    const grade = gradeMap(odds.grade);
+    const grade = gradeMap(odds.Positive_EV);
     const fanduel = odds.FanDuel;
     const draftkings = odds.DraftKings;
     const betmgm = odds.BetMGM;

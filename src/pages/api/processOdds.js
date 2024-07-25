@@ -5,10 +5,10 @@ import { processDataToSQL } from "./pipeline/calculateEV.js";
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
-      const { sports, markets } = req.body;
+      const { api_key, sports, markets } = req.body;
 
       // Step 1: Fetch data
-      const oddsData = await fetchOdds(sports, markets);
+      const oddsData = await fetchOdds(api_key, sports, markets);
 
       // Step 2: Pre-process the data
       const preprocessedData = preprocessData(oddsData);

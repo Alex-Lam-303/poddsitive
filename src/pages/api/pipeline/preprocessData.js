@@ -91,32 +91,37 @@ function formatData(oddsInfo, line) {
 
 function preprocessData(data) {
   const processedData = [];
-  if (Array.isArray(data) && data.length > 0 && typeof data[0] === "object") {
-    data.forEach((event) => {
-      const eventId = event.id;
-      const sportKey = event.sport_key;
-      const homeTeam = event.home_team;
-      const awayTeam = event.away_team;
-      const commenceTime = event.commence_time;
+  try {
+    if (Array.isArray(data) && data.length > 0 && typeof data[0] === "object") {
+      data.forEach((event) => {
+        const eventId = event.id;
+        const sportKey = event.sport_key;
+        const homeTeam = event.home_team;
+        const awayTeam = event.away_team;
+        const commenceTime = event.commence_time;
 
-      event.bookmakers.forEach((bookmaker) => {
-        const oddsInfo = {
-          game_id: eventId,
-          sport_key: sportKey,
-          sportsbook: bookmaker.title,
-          home_team: homeTeam,
-          away_team: awayTeam,
-          commence_time: commenceTime,
-        };
+        event.bookmakers.forEach((bookmaker) => {
+          const oddsInfo = {
+            game_id: eventId,
+            sport_key: sportKey,
+            sportsbook: bookmaker.title,
+            home_team: homeTeam,
+            away_team: awayTeam,
+            commence_time: commenceTime,
+          };
 
-        bookmaker.markets.forEach((market) => {
-          const formattedOdds = formatData(oddsInfo, market);
-          processedData.push(...formattedOdds);
+          bookmaker.markets.forEach((market) => {
+            const formattedOdds = formatData(oddsInfo, market);
+            processedData.push(...formattedOdds);
+          });
         });
       });
-    });
-  } else {
-    console.log("Unexpected data format");
+    } else {
+      throw new Error("Unexpected data format");
+    }
+  } catch (error) {
+    console.error("Error processing data:", error);
+    throw error;
   }
   return processedData;
 }

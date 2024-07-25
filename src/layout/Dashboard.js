@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Row, Col } from "antd";
+import { Row, Col, message } from "antd";
 import { getOdds } from "../api/odds";
 import { transformOdds } from "../utils/oddsUtils";
 import MainTable from "../components/MainTable";
@@ -9,11 +9,14 @@ import ShownSelector from "../components/ShownSelector";
 import OddsFormatSwitch from "../components/OddsFormatSwitch";
 import RefreshOdds from "../components/RefreshOdds";
 import OddsOptions from "../components/OddsOptions";
+import ApiKeyInput from "../components/ApiKeyInput";
+import localStorage from "local-storage";
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      apiKey: localStorage.get("oddsapi_api_key") || "",
       decimalOdds: true,
       refreshOddsDate: new Date(),
       odds: [],
@@ -52,19 +55,25 @@ class Dashboard extends React.Component {
     };
   }
 
-  fetchOdds = () => {
-    getOdds(this.state.oddsOptions.sports, this.state.oddsOptions.markets)
-      .then((data) => {
-        this.setState({ odds: transformOdds(data) });
-      })
-      .catch((error) => {
-        console.error("Error fetching odds:", error);
-      });
-    /* this.setState({
-      refreshOddsDate: new Date(Date.now() + 3 * 60 * 60 * 1000),
-    }); */
-  };
+  fetchOdds = async () => {
+    try {
+      const data = await getOdds(
+        this.state.apiKey,
+        this.state.oddsOptions.sports,
+        this.state.oddsOptions.markets
+      );
+      this.setState({ odds: transformOdds(data) });
 
+      // Check if localStorage is functioning correctly
+      if (this.state.apiKey) {
+        localStorage.set("oddsapi_api_key", this.state.apiKey); // Use set instead of setItem
+      }
+    } catch (error) {
+      message.error(
+        "Error fetching odds. Please check your OddsAPI API key is valid."
+      );
+    }
+  };
   componentDidMount() {
     //this.fetchOdds();
   }
@@ -90,6 +99,10 @@ class Dashboard extends React.Component {
     }));
   };
 
+  onChangeAPIKey = (value) => {
+    this.setState({ apiKey: value });
+  };
+
   render() {
     return (
       <>
@@ -100,7 +113,7 @@ class Dashboard extends React.Component {
           }}
         >
           <Row gutter={30}>
-            <Col span={12}>
+            <Col span={11}>
               <Row style={{ marginLeft: 5, marginBottom: 10 }}>
                 <OddsFormatSwitch
                   decimalOdds={this.state.decimalOdds}
@@ -114,12 +127,16 @@ class Dashboard extends React.Component {
                 onChangeShownSportsbooks={this.onChangeShownSportsbooks}
               />
             </Col>
-            <Col span={12}>
+            <Col span={13}>
               <Row gutter={30}>
                 <Col span={20} style={{ marginTop: 5 }}>
                   <OddsOptions
                     oddsOptions={this.state.oddsOptions}
                     onChangeOddOptions={this.onChangeOddOptions}
+                  />
+                  <ApiKeyInput
+                    apiKey={this.state.apiKey}
+                    onChangeAPIKey={this.onChangeAPIKey}
                   />
                 </Col>
                 <Col span={4} style={{ marginTop: 45 }}>

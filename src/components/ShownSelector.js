@@ -10,7 +10,7 @@ class ShownSelector extends React.Component {
   render() {
     return (
       <Collapse>
-        <Panel header="Columns" key="1">
+        <Panel header="Columns" key="1" style={{ padding: "5px 0" }}>
           <Checkbox.Group
             style={{
               width: "100%",
@@ -40,7 +40,7 @@ class ShownSelector extends React.Component {
             </Row>
           </Checkbox.Group>
         </Panel>
-        <Panel header="Sportsbooks" key="2">
+        <Panel header="Sportsbooks" key="2" style={{ padding: "5px 0" }}>
           <Checkbox.Group
             style={{
               width: "100%",

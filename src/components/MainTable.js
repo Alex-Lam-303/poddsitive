@@ -21,6 +21,13 @@ import { convertDecimalToAmericanOdds } from "../utils/oddsUtils";
 import "./MainTable.css";
 
 class MainTable extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isMobile: window.innerWidth <= 768,
+    };
+  }
+
   sportsbooks = [
     { icon: fanduel_icon, alt: "FanDuel", dataIndex: "fanduel" },
     { icon: draftkings_icon, alt: "DraftKings", dataIndex: "draftkings" },
@@ -146,7 +153,7 @@ class MainTable extends Component {
         dataIndex: "line",
         key: "line",
         width: 200,
-        fixed: "left",
+        fixed: this.state.isMobile ? "left" : false,
       },
       {
         title: "Probability",

@@ -7,10 +7,10 @@ dotenv.config();
 const REGIONS = "us";
 const ODDS_FORMAT = "decimal";
 const DATE_FORMAT = "iso";
-const API_KEY = process.env.ODDS_API_KEY;
 
-export async function fetchOdds(sports, markets) {
+export async function fetchOdds(api_key, sports, markets) {
   const MARKETS = markets.join(",");
+  const API_KEY = api_key;
   try {
     const allData = [];
 
@@ -36,13 +36,11 @@ export async function fetchOdds(sports, markets) {
     }
     return allData;
   } catch (error) {
-    console.error(error);
-    return { error: error.message };
+    console.error("Error fetching odds:", error);
+    throw error;
   }
-  /*
-  const filePath = path.join(process.cwd(), "src", "data", "rawData.json"); // Adjust the path as necessary
-  const data = await fs.promises.readFile(filePath, "utf8"); // Use fs.promises to read the file
+  /* const filePath = path.join(process.cwd(), "src", "data", "rawDataOther.json");
+  const data = await fs.promises.readFile(filePath, "utf8");
   const jsonData = JSON.parse(data);
-  return jsonData;
-  */
+  return jsonData; */
 }

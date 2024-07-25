@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Layout, Menu, Row, Col } from "antd";
+import { Layout, Menu, Col, Input, Row, Tooltip } from "antd";
 import Image from "next/image";
 import poddsitiveLogo from "../assets/poddsitive_icons/dark_with_name.png";
 
@@ -14,6 +14,7 @@ const AppHeader = () => {
         background: "#343a4e",
         display: "flex",
         alignItems: "center",
+        justifyContent: "space-between",
         padding: "0 10px",
       }}
     >
@@ -23,6 +24,7 @@ const AppHeader = () => {
         layout="fixed"
         style={{ paddingRight: "10px", height: "100%", width: "auto" }}
       />
+
       {/*  <Menu
         mode="horizontal"
         defaultSelectedKeys={["1"]}

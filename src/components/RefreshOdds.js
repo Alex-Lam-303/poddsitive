@@ -1,9 +1,12 @@
 "use client";
 
-import { Progress, Button, Tooltip, message } from "antd";
+import React, { useState } from "react";
+import { Progress, Button, Tooltip, message, Spin } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
 
 const OddsFormatSwitch = ({ refreshOddsDate, fetchOdds }) => {
+  const [fetchingOdds, setFetchingOdds] = useState(false);
+
   const timeLeft = refreshOddsDate.getTime() - Date.now();
   const progress = Math.round((timeLeft / (3 * 60 * 60 * 1000)) * 100);
 
@@ -14,7 +17,26 @@ const OddsFormatSwitch = ({ refreshOddsDate, fetchOdds }) => {
     );
   };
 
-  return (
+  return fetchingOdds ? (
+    <Button
+      style={{
+        height: "62px",
+        width: "62px",
+        transition: "transform 0.5s",
+        cursor: "pointer",
+        boxShadow: "none",
+      }}
+      shape="circle"
+      type="primary"
+      icon={
+        <Spin
+          indicator={
+            <ReloadOutlined spin style={{ fontSize: "25px", color: "white" }} />
+          }
+        />
+      }
+    />
+  ) : (
     <>
       {100 - progress < 100 ? (
         <div
@@ -34,7 +56,13 @@ const OddsFormatSwitch = ({ refreshOddsDate, fetchOdds }) => {
           </Tooltip>
         </div>
       ) : (
-        <div style={{ cursor: "pointer" }} onClick={() => fetchOdds()}>
+        <div
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            setFetchingOdds(true);
+            fetchOdds().finally(() => setFetchingOdds(false));
+          }}
+        >
           <Button
             style={{
               height: "62px",
