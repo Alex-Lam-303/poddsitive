@@ -15,7 +15,7 @@ class Dashboard extends React.Component {
     super(props);
     this.state = {
       decimalOdds: true,
-      refreshOddsDate: new Date("July 25, 2024, 10:00"),
+      refreshOddsDate: new Date(),
       odds: [],
       shownColumns: [
         "sport",
@@ -60,10 +60,13 @@ class Dashboard extends React.Component {
       .catch((error) => {
         console.error("Error fetching odds:", error);
       });
+    /* this.setState({
+      refreshOddsDate: new Date(Date.now() + 3 * 60 * 60 * 1000),
+    }); */
   };
 
   componentDidMount() {
-    this.fetchOdds();
+    //this.fetchOdds();
   }
 
   onChangeShownColumns = (value) => {

@@ -9,21 +9,8 @@ const ODDS_FORMAT = "decimal";
 const DATE_FORMAT = "iso";
 const API_KEY = process.env.ODDS_API_KEY;
 
-/*  async function POST(request) {
-  const { searchParams } = new URL(request.url);
-  const sports = searchParams.get("sports") || "baseball_mlb";
-  const markets = searchParams.get("markets") || "h2h";
-
-  const raw_data = await fetchOdds(sports, markets);
-  return NextResponse.json(raw_data);
-}
- */
 export async function fetchOdds(sports, markets) {
-  //const MARKETS = markets.split(",").join(",");
-
-  /* 
-  const MARKETS = "h2h";
-
+  const MARKETS = markets.join(",");
   try {
     const allData = [];
 
@@ -52,9 +39,10 @@ export async function fetchOdds(sports, markets) {
     console.error(error);
     return { error: error.message };
   }
-    */
-  const filePath = path.join(process.cwd(), "src", "data", "rawDataOther.json"); // Adjust the path as necessary
+  /*
+  const filePath = path.join(process.cwd(), "src", "data", "rawData.json"); // Adjust the path as necessary
   const data = await fs.promises.readFile(filePath, "utf8"); // Use fs.promises to read the file
   const jsonData = JSON.parse(data);
   return jsonData;
+  */
 }

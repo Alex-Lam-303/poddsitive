@@ -95,11 +95,14 @@ class MainTable extends Component {
           return (
             <span>
               {now > date ? (
-                <Tooltip title="Live odds constantly change. Odds shown may have changed since the last update.">
-                  <Tag color="red">LIVE</Tag>
-                </Tooltip>
+                <>
+                  <Tooltip title="Live odds constantly change. Odds shown may have changed since the last update.">
+                    <Tag color="red">LIVE</Tag>
+                  </Tooltip>
+                  <br />
+                </>
               ) : null}
-              <br />
+
               {date.toLocaleString("en-US", {
                 month: "numeric",
                 day: "numeric",

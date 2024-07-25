@@ -2,8 +2,9 @@
 
 import React from "react";
 import { sportsMap } from "../constants/sportsMap";
+import { sportsIconMap } from "../assets/sports_icons";
 
-import { Row, Col, Select } from "antd";
+import { Row, Col, Select, Flex } from "antd";
 
 class OddOptions extends React.Component {
   render() {
@@ -16,10 +17,8 @@ class OddOptions extends React.Component {
           </div>
         </Row>
         <Row align="middle" style={{ marginBottom: 10 }}>
-          <Col span={2} col-2 col-push-22>
-            Sport:{" "}
-          </Col>
-          <Col span={22} col-22 col-push-2>
+          <Col flex="50px">Sport: </Col>
+          <Col flex="auto">
             <Select
               mode="multiple"
               onChange={(value) => onChangeOddOptions(value, "sports")}
@@ -28,17 +27,27 @@ class OddOptions extends React.Component {
             >
               {Object.entries(sportsMap).map(([key, value]) => (
                 <Select.Option key={key} value={key}>
-                  {value}
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <img
+                      style={{
+                        width: 14,
+                        height: 14,
+                        borderRadius: 3,
+                        marginBottom: 1,
+                      }}
+                      src={sportsIconMap[value]}
+                      alt={value}
+                    />
+                    <span style={{ marginLeft: 5 }}>{value}</span>
+                  </div>
                 </Select.Option>
               ))}
             </Select>
           </Col>
         </Row>
         <Row align="middle">
-          <Col span={3} col-3 col-push-21>
-            Markets:{" "}
-          </Col>
-          <Col span={21} col-21 col-push-3>
+          <Col flex="67px">Markets: </Col>
+          <Col flex="auto">
             <Select
               mode="multiple"
               onChange={(value) => onChangeOddOptions(value, "markets")}

@@ -1,6 +1,6 @@
-import { fetchOdds } from "./fetchOdds.js";
-import { preprocessData } from "./preprocessData.js";
-import { processDataToSQL } from "./calculateEV.js";
+import { fetchOdds } from "./pipeline/fetchOdds.js";
+import { preprocessData } from "./pipeline/preprocessData.js";
+import { processDataToSQL } from "./pipeline/calculateEV.js";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
@@ -13,17 +13,16 @@ export default async function handler(req, res) {
       // Step 2: Pre-process the data
       const preprocessedData = preprocessData(oddsData);
 
-      // Step 3: Analyze the data
-      const processedData = await processDataToSQL(preprocessedData); // Ensure this is awaited
+      // Step 3: Calculate the EV
+      const processedData = await processDataToSQL(preprocessedData);
 
-      // Send the processed data as a JSON response
       res.status(200).json(processedData);
     } catch (error) {
       console.error("Error processing odds:", error);
-      res.status(500).json({ error: error.message }); // Send error response
+      res.status(500).json({ error: error.message });
     }
   } else {
     res.setHeader("Allow", ["POST"]);
-    res.status(405).json({ error: "Method Not Allowed" }); // Send method not allowed response
+    res.status(405).json({ error: "Method Not Allowed" });
   }
 }
