@@ -20,6 +20,7 @@ const AppHeader = () => {
       <Image
         src={poddsitiveLogo}
         alt="Poddsitive"
+        layout="fixed"
         style={{ paddingRight: "10px", height: "100%", width: "auto" }}
       />
       {/*  <Menu
