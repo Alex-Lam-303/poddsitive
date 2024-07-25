@@ -1,6 +1,8 @@
+"use client";
+
 import React from "react";
 import { Layout } from "antd";
-import Dashboard from "../pages/Dashboard";
+import Dashboard from "./Dashboard";
 
 const { Content } = Layout;
 

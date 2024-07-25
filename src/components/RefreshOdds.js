@@ -1,3 +1,5 @@
+"use client";
+
 import { Progress, message } from "antd";
 
 const OddsFormatSwitch = ({ refreshOddsDate, fetchOdds }) => {

@@ -14,7 +14,6 @@ DATE_FORMAT = 'iso'
 API_KEY = os.getenv('ODDS_API_KEY')
 
 def fetch_odds(sports, markets):
-    """
     MARKETS = ",".join(markets)
     all_data = []
 
@@ -40,7 +39,7 @@ def fetch_odds(sports, markets):
     with open('rawData.json', 'w') as json_file:
         json.dump(all_data, json_file)
     return all_data
-    """
+   
 
     """
     raw_data = json.load(open('rawData.json'))
@@ -49,6 +48,6 @@ def fetch_odds(sports, markets):
     # Combine the two lists
     combined_data = raw_data + raw_data_other  # Concatenate the lists
     return combined_data
-    """
 
     return json.load(open('rawData.json'))
+     """

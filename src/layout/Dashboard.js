@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import { Row, Col } from "antd";
-import { getOdds, transformOdds } from "../api/odds";
+import { getOdds } from "../api/odds";
+import { transformOdds } from "../utils/oddsUtils";
 import MainTable from "../components/MainTable";
 import ShownSelector from "../components/ShownSelector";
 import OddsFormatSwitch from "../components/OddsFormatSwitch";
@@ -12,7 +15,7 @@ class Dashboard extends React.Component {
     super(props);
     this.state = {
       decimalOdds: true,
-      refreshOddsDate: new Date("July 24, 2024, 16:00"),
+      refreshOddsDate: new Date("July 25, 2024, 10:00"),
       odds: [],
       shownColumns: [
         "sport",

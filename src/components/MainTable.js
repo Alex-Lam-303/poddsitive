@@ -1,3 +1,5 @@
+"use client";
+
 import React, { Component } from "react";
 import { Table, Tag, Tooltip } from "antd";
 import {
@@ -15,7 +17,7 @@ import {
 } from "../assets/sportsbook_icons";
 import { sportsIconMap } from "../assets/sports_icons";
 import { gradeColorMap, gradeMap } from "../constants/gradeMap";
-import { convertDecimalToAmericanOdds } from "../api/odds";
+import { convertDecimalToAmericanOdds } from "../utils/oddsUtils";
 import "./MainTable.css";
 
 class MainTable extends Component {
