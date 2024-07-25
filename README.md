@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Poddsitive
+
+Poddsitive is a powerful tool designed to help users find **value** in sports betting markets. With its user-friendly interface and robust features, Poddsitive empowers bettors to make informed decisions and maximize their betting strategies.
+
+## Features
+
+- **Real-Time Odds**: Access up-to-date odds from multiple sports and markets.
+- **Comprehensive Sports Coverage**: Track odds for a wide range of sports including baseball (MLB), football (NFL), basketball (NBA), and more.
+- **Odds Types**: Search Moneyline, Over/Under, and Spread Odds to find the best value.
+- **Data Analysis Tools**: Utilize built-in analytics to evaluate betting trends and performance.
 
 ## Getting Started
 
-First, run the development server:
+To get started with Poddsitive, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Installation**: Clone the repository and install the necessary dependencies.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```bash
+   git clone https://github.com/yourusername/poddsitive.git
+   cd poddsitive
+   npm install
+   ```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+2. **Configuration**: Set up your environment variables. Create a `.env` file in the root directory and add your API keys.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+   ```
+   ODDS_API_KEY=your_api_key_here
+   ```
 
-## Learn More
+3. **Run the Application**: Start the application using the following command:
+   ```bash
+   npm start
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+We welcome contributions to Poddsitive! If you have suggestions or improvements, please fork the repository and submit a pull request.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
