@@ -1,5 +1,4 @@
 import sqlite3
-from fetchsports import fetch_data
 from preprocessData import preprocess_data
 
 def process_data_to_sql(data):

@@ -10,12 +10,28 @@ export const convertDecimalToAmericanOdds = (decimalOdds) => {
   }
 };
 
-export const getOdds = () => {
-  return fetch("http://127.0.0.1:5000/get-odds")
-    .then((response) => response.json())
-    .then((data) => {
-      return data;
+export const getOdds = async (sports, markets) => {
+  console.log("SPORTS", sports);
+  console.log("MARKETS", markets);
+  const requestBody = JSON.stringify({ sports, markets });
+  console.log("Request Body:", requestBody);
+  try {
+    const response = await fetch("http://127.0.0.1:5000/get-odds", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ sports, markets }),
     });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching odds:", error);
+    throw error;
+  }
 };
 
 export const transformOdds = (oddsData) => {

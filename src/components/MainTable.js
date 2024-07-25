@@ -19,10 +19,6 @@ import { convertDecimalToAmericanOdds } from "../api/odds";
 import "./MainTable.css";
 
 class MainTable extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   sportsbooks = [
     { icon: fanduel_icon, alt: "FanDuel", dataIndex: "fanduel" },
     { icon: draftkings_icon, alt: "DraftKings", dataIndex: "draftkings" },
@@ -46,7 +42,8 @@ class MainTable extends Component {
       dataIndex: dataIndex,
       key: dataIndex,
       width: 80,
-      hidden: this.props.hiddenSportsbooks.includes(dataIndex),
+      hidden: !this.props.shownSportsbooks.includes(dataIndex),
+      align: "center",
       render: (text) =>
         text ? (
           <span>
@@ -63,7 +60,7 @@ class MainTable extends Component {
         title: "Last Updated",
         dataIndex: "last_updated",
         key: "last_updated",
-        hidden: this.props.hiddenColumns.includes("last_updated"),
+        hidden: this.props.shownColumns.includes("last_updated"),
       }, */
       {
         title: "Sport",
@@ -71,7 +68,7 @@ class MainTable extends Component {
         key: "sport",
         width: 70,
         fixed: "left",
-        hidden: this.props.hiddenColumns.includes("sport"),
+        align: "center",
         render: (text) => (
           <Tooltip title={text}>
             <div>
@@ -89,7 +86,7 @@ class MainTable extends Component {
         dataIndex: "commence_datetime",
         key: "commence_datetime",
         width: 150,
-        hidden: this.props.hiddenColumns.includes("commence_datetime"),
+        hidden: !this.props.shownColumns.includes("commence_datetime"),
         render: (text) => {
           const now = new Date();
           const date = new Date(text);
@@ -117,28 +114,33 @@ class MainTable extends Component {
         dataIndex: "home_team",
         key: "home_team",
         width: 170,
-        hidden: this.props.hiddenColumns.includes("home_team"),
+        hidden: !this.props.shownColumns.includes("home_team"),
       },
       {
         title: "Away Team",
         dataIndex: "away_team",
         key: "away_team",
         width: 170,
-        hidden: this.props.hiddenColumns.includes("away_team"),
+        hidden: !this.props.shownColumns.includes("away_team"),
       },
       {
         title: "Market",
         dataIndex: "market",
         key: "market",
         width: 100,
-        hidden: this.props.hiddenColumns.includes("market"),
+        hidden: !this.props.shownColumns.includes("market"),
+        filters: [
+          { text: "Moneyline", value: "Moneyline" },
+          { text: "Total", value: "Total" },
+          { text: "Spread", value: "Spread" },
+        ],
+        onFilter: (value, record) => record.market.includes(value),
       },
       {
         title: "Line",
         dataIndex: "line",
         key: "line",
         width: 200,
-        hidden: this.props.hiddenColumns.includes("line"),
         fixed: "left",
       },
       {
@@ -146,7 +148,9 @@ class MainTable extends Component {
         dataIndex: "probability",
         key: "probability",
         width: 108,
-        hidden: this.props.hiddenColumns.includes("probability"),
+        align: "center",
+        hidden: !this.props.shownColumns.includes("probability"),
+        sorter: (a, b) => a.probability - b.probability,
         render: (text) => <span>{text}%</span>,
       },
       {
@@ -155,7 +159,6 @@ class MainTable extends Component {
         key: "pick",
         width: 65,
         fixed: "left",
-        hidden: this.props.hiddenColumns.includes("pick"),
         render: (text) =>
           text.map((pick) => {
             const icon = sportsbookIconMap[pick];
@@ -172,9 +175,10 @@ class MainTable extends Component {
         title: "Implied Odds",
         dataIndex: "implied_odds",
         key: "implied_odds",
-        width: 130,
+        width: 140,
+        align: "center",
         fixed: "left",
-        hidden: this.props.hiddenColumns.includes("implied_odds"),
+        sorter: (a, b) => a.implied_odds - b.implied_odds,
         render: (text) => (
           <span>
             {this.props.decimalOdds ? text : convertDecimalToAmericanOdds(text)}
@@ -187,7 +191,7 @@ class MainTable extends Component {
         key: "positive_ev",
         width: 75,
         fixed: "left",
-        hidden: this.props.hiddenColumns.includes("positive_ev"),
+        align: "center",
         render: (text) => (
           <Tag color={gradeColorMap[gradeMap(parseFloat(text))]}>{text}%</Tag>
         ),
@@ -197,7 +201,19 @@ class MainTable extends Component {
         dataIndex: "grade",
         key: "grade",
         width: 80,
-        hidden: this.props.hiddenColumns.includes("grade"),
+        align: "center",
+        hidden: !this.props.shownColumns.includes("grade"),
+        filters: [
+          { text: "S", value: "S" },
+          { text: "A+", value: "A+" },
+          { text: "A", value: "A" },
+          { text: "A-", value: "A-" },
+          { text: "B", value: "B" },
+          { text: "C", value: "C" },
+          { text: "D", value: "D" },
+          { text: "F", value: "F" },
+        ],
+        onFilter: (value, record) => record.grade.includes(value),
         render: (text) => <Tag color={gradeColorMap[text]}>{text}</Tag>,
       },
       ...this.sportsbookColumns,

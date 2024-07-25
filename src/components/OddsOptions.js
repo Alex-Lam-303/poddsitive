@@ -20,8 +20,8 @@ class OddOptions extends React.Component {
           <Col span={22} col-22 col-push-2>
             <Select
               mode="multiple"
-              onChange={(value) => onChangeOddOptions(value, "sport")}
-              value={oddsOptions.sport}
+              onChange={(value) => onChangeOddOptions(value, "sports")}
+              value={oddsOptions.sports}
               style={{ width: "100%" }}
             >
               {Object.entries(sportsMap).map(([key, value]) => (

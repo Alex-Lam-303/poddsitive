@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col } from "antd";
 import { getOdds, transformOdds } from "../api/odds";
 import MainTable from "../components/MainTable";
-import HiddenSelector from "../components/HiddenSelector";
+import ShownSelector from "../components/ShownSelector";
 import OddsFormatSwitch from "../components/OddsFormatSwitch";
 import RefreshOdds from "../components/RefreshOdds";
 import OddsOptions from "../components/OddsOptions";
@@ -12,12 +12,35 @@ class Dashboard extends React.Component {
     super(props);
     this.state = {
       decimalOdds: true,
-      refreshOddsDate: new Date("July 24, 2024, 18:00"),
+      refreshOddsDate: new Date("July 24, 2024, 16:00"),
       odds: [],
-      hiddenColumns: ["home_team", "away_team", "market", "grade"],
-      hiddenSportsbooks: [],
+      shownColumns: [
+        "sport",
+        "commence_datetime",
+        "home_team",
+        "away_team",
+        "market",
+        "line",
+        "probability",
+        "pick",
+        "implied_odds",
+        "positive_ev",
+        "grade",
+      ],
+      shownSportsbooks: [
+        "fanduel",
+        "draftkings",
+        "betmgm",
+        "caesars",
+        "betrivers",
+        "mybookie_ag",
+        "bovada",
+        "betus",
+        "lowvig_ag",
+        "betonline_ag",
+      ],
       oddsOptions: {
-        sport: ["baseball_mlb"],
+        sports: ["baseball_mlb"],
         markets: ["h2h"],
         regions: "us",
         odds_format: "decimal",
@@ -27,7 +50,7 @@ class Dashboard extends React.Component {
   }
 
   fetchOdds = () => {
-    getOdds()
+    getOdds(this.state.oddsOptions.sports, this.state.oddsOptions.markets)
       .then((data) => {
         this.setState({ odds: transformOdds(data) });
       })
@@ -40,12 +63,12 @@ class Dashboard extends React.Component {
     this.fetchOdds();
   }
 
-  onChangeHiddenColumns = (value) => {
-    this.setState({ hiddenColumns: value });
+  onChangeShownColumns = (value) => {
+    this.setState({ shownColumns: value });
   };
 
-  onChangeHiddenSportsbooks = (value) => {
-    this.setState({ hiddenSportsbooks: value });
+  onChangeShownSportsbooks = (value) => {
+    this.setState({ shownSportsbooks: value });
   };
 
   onChangeOddsFormat = (value) => {
@@ -78,11 +101,11 @@ class Dashboard extends React.Component {
                   onChangeOddsFormat={this.onChangeOddsFormat}
                 />
               </Row>
-              <HiddenSelector
-                hiddenColumns={this.state.hiddenColumns}
-                hiddenSportsbooks={this.state.hiddenSportsbooks}
-                onChangeHiddenColumns={this.onChangeHiddenColumns}
-                onChangeHiddenSportsbooks={this.onChangeHiddenSportsbooks}
+              <ShownSelector
+                shownColumns={this.state.shownColumns}
+                shownSportsbooks={this.state.shownSportsbooks}
+                onChangeShownColumns={this.onChangeShownColumns}
+                onChangeShownSportsbooks={this.onChangeShownSportsbooks}
               />
             </Col>
             <Col span={12}>
@@ -105,8 +128,8 @@ class Dashboard extends React.Component {
         </div>
         <MainTable
           odds={this.state.odds}
-          hiddenColumns={this.state.hiddenColumns}
-          hiddenSportsbooks={this.state.hiddenSportsbooks}
+          shownColumns={this.state.shownColumns}
+          shownSportsbooks={this.state.shownSportsbooks}
           decimalOdds={this.state.decimalOdds}
         />
       </>

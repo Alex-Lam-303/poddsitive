@@ -4,20 +4,17 @@ import { Checkbox, Row, Col, Collapse } from "antd";
 
 const { Panel } = Collapse;
 
-class HiddenSelector extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
+class ShownSelector extends React.Component {
   render() {
     return (
       <Collapse>
-        <Panel header="Hide Columns" key="1">
+        <Panel header="Columns" key="1">
           <Checkbox.Group
             style={{
               width: "100%",
             }}
-            onChange={this.props.onChangeHiddenColumns}
+            onChange={this.props.onChangeShownColumns}
+            value={this.props.shownColumns}
           >
             <Row>
               <Col span={8}>
@@ -41,12 +38,13 @@ class HiddenSelector extends React.Component {
             </Row>
           </Checkbox.Group>
         </Panel>
-        <Panel header="Hide Sportsbooks" key="2">
+        <Panel header="Sportsbooks" key="2">
           <Checkbox.Group
             style={{
               width: "100%",
             }}
-            onChange={this.props.onChangeHiddenSportsbooks}
+            onChange={this.props.onChangeShownSportsbooks}
+            value={this.props.shownSportsbooks}
           >
             <Row>
               <Col span={8}>
@@ -87,4 +85,4 @@ class HiddenSelector extends React.Component {
   }
 }
 
-export default HiddenSelector;
+export default ShownSelector;
