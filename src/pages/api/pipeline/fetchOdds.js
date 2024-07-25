@@ -39,8 +39,9 @@ export async function fetchOdds(api_key, sports, markets) {
     console.error("Error fetching odds:", error);
     throw error;
   }
-  /* const filePath = path.join(process.cwd(), "src", "data", "rawDataOther.json");
+  /* const filePath = path.join(process.cwd(), "src", "data", "rawData.json");
   const data = await fs.promises.readFile(filePath, "utf8");
   const jsonData = JSON.parse(data);
-  return jsonData; */
+  return jsonData;
+  */
 }

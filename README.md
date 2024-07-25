@@ -1,6 +1,10 @@
 # Poddsitive
 
-Poddsitive is a powerful tool designed to help users find **value** in sports betting markets. With its user-friendly interface and robust features, Poddsitive empowers bettors to make informed decisions and maximize their betting strategies.
+<a href="https://poddsitive.com">Poddsitive</a> is a powerful tool designed to help users find **value** in sports betting markets. With its user-friendly interface and robust features, Poddsitive empowers bettors to make informed decisions and maximize their betting strategies.
+
+![Poddsitive Positive EV Dashboard](./demo.png)
+
+Try it now at <a href="https://www.poddsitive.com">www.poddsitive.com</a>
 
 ## Features
 
@@ -35,7 +39,3 @@ To get started with Poddsitive, follow these steps:
 ## Contributing
 
 We welcome contributions to Poddsitive! If you have suggestions or improvements, please fork the repository and submit a pull request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
