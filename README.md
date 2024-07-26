@@ -4,7 +4,7 @@
 
 ![Poddsitive Positive EV Dashboard](./demo.png)
 
-Try it now at <a href="https://www.poddsitive.com">www.poddsitive.com</a>
+Try it now at <a href="https://www.poddsitive.com">www.poddsitive.com</a>!
 
 ## Features
 

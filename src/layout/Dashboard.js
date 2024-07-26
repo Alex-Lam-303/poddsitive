@@ -18,7 +18,7 @@ class Dashboard extends React.Component {
     this.state = {
       apiKey: localStorage.get("oddsapi_api_key") || "",
       decimalOdds: true,
-      refreshOddsDate: new Date(),
+      refreshOddsDate: new Date(), //new Date().getTime() + 15 * 60 * 1000),
       odds: [],
       shownColumns: [
         "sport",

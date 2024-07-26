@@ -76,7 +76,7 @@ class MainTable extends Component {
         dataIndex: "sport",
         key: "sport",
         width: 70,
-        fixed: "left",
+        fixed: !this.state.isMobile ? "left" : false,
         align: "center",
         render: (text) => (
           <Tooltip title={text}>
@@ -153,7 +153,7 @@ class MainTable extends Component {
         dataIndex: "line",
         key: "line",
         width: 200,
-        fixed: this.state.isMobile ? "left" : false,
+        fixed: "left",
       },
       {
         title: "Probability",
@@ -170,7 +170,7 @@ class MainTable extends Component {
         dataIndex: "pick",
         key: "pick",
         width: 65,
-        fixed: "left",
+        fixed: !this.state.isMobile ? "left" : false,
         render: (text) =>
           text.map((pick) => {
             const icon = sportsbookIconMap[pick];
@@ -189,7 +189,7 @@ class MainTable extends Component {
         key: "implied_odds",
         width: 140,
         align: "center",
-        fixed: "left",
+        fixed: !this.state.isMobile ? "left" : false,
         sorter: (a, b) => a.implied_odds - b.implied_odds,
         render: (text) => (
           <span>
@@ -246,9 +246,9 @@ class MainTable extends Component {
           columns={this.columns}
           dataSource={this.props.odds}
           rowKey="game_id"
-          pagination={false}
+          pagination={{ pageSize: 50 }}
           scroll={{
-            y: "70vh",
+            y: "60vh",
           }}
         />
       </div>
