@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import { Layout, Menu, Col, Input, Row, Tooltip } from "antd";
+import { Layout, Menu, Col, Input, Row, Tooltip, Button } from "antd";
 import Image from "next/image";
 import poddsitiveLogo from "../assets/poddsitive_icons/dark_with_name.png";
+import { logoutOfPoddsitive } from "../firebase/auth";
 
 const { Header } = Layout;
 
@@ -24,7 +25,7 @@ const AppHeader = () => {
         layout="fixed"
         style={{ paddingRight: "10px", height: "100%", width: "auto" }}
       />
-
+      <Button onClick={() => logoutOfPoddsitive()}>Log out</Button>
       {/*  <Menu
         mode="horizontal"
         defaultSelectedKeys={["1"]}

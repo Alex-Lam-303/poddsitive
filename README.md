@@ -2,7 +2,7 @@
 
 <a href="https://poddsitive.com">Poddsitive</a> is a powerful tool designed to help users find **value** in sports betting markets. With its user-friendly interface and robust features, Poddsitive empowers bettors to make informed decisions and maximize their betting strategies.
 
-![Poddsitive Positive EV Dashboard](./demo.png)
+![Poddsitive Positive EV Dashboard](./src/assets/demo.png)
 
 Try it now at <a href="https://www.poddsitive.com">www.poddsitive.com</a>!
 
