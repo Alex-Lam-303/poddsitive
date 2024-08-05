@@ -11,63 +11,28 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
 } from "firebase/auth";
+import { createUserInFirestore } from "../api/users";
 
-// Function to sign in with Google
-export const signInWithGoogle = async () => {
-  const provider = new GoogleAuthProvider();
+export const signUpPoddsitive = async (type, email = null, password = null) => {
   try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    console.log("User signed in with Google:", user);
-    return user; // Return user info if needed
+    if (type === "email") {
+      const signUp = await signUpWithEmailAndPassword(email, password);
+      createUserInFirestore(email);
+      return signUp;
+    }
+    if (type === "google") {
+      return await signUpWithGoogle();
+    } else if (type === "facebook") {
+      return await signUpWithFacebook();
+    } else if (type === "apple") {
+      return await signUpWithApple();
+    }
   } catch (error) {
-    console.error("Error signing in with Google:", error);
-    throw error; // Rethrow the error for handling in the component
-  }
-};
-
-// Function to sign in with Facebook
-export const signInWithFacebook = async () => {
-  const provider = new FacebookAuthProvider();
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    console.log("User signed in with Facebook:", user);
-    return user; // Return user info if needed
-  } catch (error) {
-    console.error("Error signing in with Facebook:", error);
-    throw error; // Rethrow the error for handling in the component
-  }
-};
-
-// Function to sign in with Apple
-export const signInWithApple = async () => {
-  const provider = new OAuthProvider("apple.com");
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    console.log("User signed in with Apple:", user);
-    return user; // Return user info if needed
-  } catch (error) {
-    console.error("Error signing in with Apple:", error);
-    throw error; // Rethrow the error for handling in the component
-  }
-};
-
-// Function to sign up with email and password
-export const signUpWithEmailAndPassword = async (email, password) => {
-  try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    const user = userCredential.user;
-    console.log("User signed up with email:", user);
-    return user; // Return user info if needed
-  } catch (error) {
-    console.error("Error signing up with email:", error);
-    throw error; // Rethrow the error for handling in the component
+    if (error.code === "auth/email-already-in-use") {
+      throw new Error("User already exists. Please sign in.");
+    } else {
+      throw error;
+    }
   }
 };
 
@@ -80,10 +45,9 @@ export const loginWithEmailAndPassword = async (email, password) => {
       password
     );
     const user = userCredential.user;
-    return user; // Return user info if needed
+    return user;
   } catch (error) {
-    console.error("Error logging in with email:", error);
-    throw error; // Rethrow the error for handling in the component
+    throw error;
   }
 };
 
@@ -91,10 +55,8 @@ export const loginWithEmailAndPassword = async (email, password) => {
 export const sendResetEmail = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email);
-    console.log("Password reset email sent to:", email);
   } catch (error) {
-    console.error("Error sending password reset email:", error);
-    throw error; // Rethrow the error for handling in the component
+    throw error;
   }
 };
 
@@ -102,8 +64,61 @@ export const sendResetEmail = async (email) => {
 export const logoutOfPoddsitive = async () => {
   try {
     await signOut(auth);
-    console.log("User signed out successfully.");
   } catch (error) {
-    console.error("Error signing out:", error);
+    throw error;
+  }
+};
+
+// Function to sign in with Google
+const signUpWithGoogle = async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    return user;
+  } catch (error) {
+    console.error("Error signing in with Google:", error);
+    throw error;
+  }
+};
+
+// Function to sign in with Facebook
+const signUpWithFacebook = async () => {
+  const provider = new FacebookAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    console.log("User signed in with Facebook:", user);
+    return user;
+  } catch (error) {
+    console.error("Error signing in with Facebook:", error);
+    throw error;
+  }
+};
+
+// Function to sign in with Apple
+const signUpWithApple = async () => {
+  const provider = new OAuthProvider("apple.com");
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Function to sign up with email and password
+const signUpWithEmailAndPassword = async (email, password) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+    return user;
+  } catch (error) {
+    throw error;
   }
 };

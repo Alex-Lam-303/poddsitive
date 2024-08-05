@@ -10,10 +10,7 @@ import { Button, Divider, Space, theme, message } from "antd";
 import { useState } from "react";
 import poddsitive_logo from "../assets/poddsitive_icons/dark_only_logo.png";
 import {
-  signInWithGoogle,
-  signInWithFacebook,
-  signInWithApple,
-  signUpWithEmailAndPassword,
+  signUpPoddsitive,
   loginWithEmailAndPassword,
   sendResetEmail,
 } from "../firebase/auth";
@@ -46,10 +43,10 @@ const LoginPage = ({ setDemoMode }) => {
 
   const handleSignUp = async () => {
     try {
-      await signUpWithEmailAndPassword(email, password);
+      const user = await signUpPoddsitive("email", email, password);
       setIsSignUp(false);
     } catch (error) {
-      console.error("Sign up error:", error);
+      message.error(error.message || "An error occurred during sign up.");
     }
   };
 
@@ -231,19 +228,19 @@ const LoginPage = ({ setDemoMode }) => {
          
           <div style={iconContainerStyle}>
             <GoogleOutlined
-              onClick={() => signInWithGoogle()}
+              onClick={() => signUpPoddsitive("google")}
               style={iconStyles}
             />
           </div>
           <div style={iconContainerStyle}>
             <FacebookOutlined
-              onClick={() => signInWithFacebook()}
+              onClick={() => signUpPoddsitive("facebook")}
               style={iconStyles}
             />
           </div>
           <div style={iconContainerStyle}>
             <AppleOutlined
-              onClick={() => signInWithApple()}
+              onClick={() => signUpPoddsitive("apple")}
               style={iconStyles}
             />
           </div>

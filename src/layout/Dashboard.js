@@ -10,14 +10,14 @@ import OddsFormatSwitch from "../components/OddsFormatSwitch";
 import RefreshOdds from "../components/RefreshOdds";
 import OddsOptions from "../components/OddsOptions";
 import ApiKeyInput from "../components/ApiKeyInput";
-import localStorage from "local-storage";
 import { getDatabase, ref, get } from "firebase/database";
+import { getUserAPIKey } from "../api/users";
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      apiKey: localStorage.get("oddsapi_api_key") || "",
+      apiKey: "",
       decimalOdds: true,
       refreshOddsDate: new Date(), //new Date().getTime() + 15 * 60 * 1000),
       odds: [],
@@ -56,8 +56,10 @@ class Dashboard extends React.Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.fetchDemoOdds();
+    const apiKey = await getUserAPIKey();
+    this.setState({ apiKey: apiKey || "" });
   }
 
   fetchOdds = async () => {
@@ -76,11 +78,6 @@ class Dashboard extends React.Component {
         this.state.oddsOptions.markets
       );
       this.setState({ odds: transformOdds(data) });
-
-      // Check if localStorage is functioning correctly
-      if (this.state.apiKey) {
-        localStorage.set("oddsapi_api_key", this.state.apiKey); // Use set instead of setItem
-      }
     } catch (error) {
       message.error(
         "Error fetching odds. Please check your OddsAPI API key is valid."

@@ -1,37 +1,63 @@
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { Col, Row, Input, Tooltip } from "antd";
-import { useState } from "react";
+import { Col, Row, message, Tooltip, Button } from "antd";
+import { ProFormText } from "@ant-design/pro-components";
+import { saveUserAPIKey } from "../api/users";
 
 const ApiKeyInput = ({ apiKey, onChangeAPIKey }) => {
   return (
     <div style={{ marginTop: 10 }}>
-      <Row align="middle">
-        <Col flex="67px">API Key: </Col>
+      <Row align="top">
+        <Col flex="82px">
+          <div
+            style={{
+              marginTop: "4.5px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            API Key
+            <Tooltip
+              title={
+                <div>
+                  Visit{" "}
+                  <a
+                    href="https://the-odds-api.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: "#499824" }}
+                  >
+                    the-odds-api.com
+                  </a>{" "}
+                  to get your free API key
+                </div>
+              }
+            >
+              <InfoCircleOutlined style={{ marginLeft: "5px" }} />
+            </Tooltip>
+            {"  "}:
+          </div>
+        </Col>
         <Col flex="auto">
-          <Input
-            placeholder="API Key"
+          <ProFormText.Password
+            name="apiKey"
             value={apiKey}
-            onChange={(e) => onChangeAPIKey(e.target.value)}
+            fieldProps={{
+              onChange: (e) => onChangeAPIKey(e.target.value),
+            }}
+            placeholder={"API Key"}
           />
         </Col>
-        <Col flex="20px">
-          <Tooltip
-            title={
-              <div>
-                Visit{" "}
-                <a
-                  href="https://the-odds-api.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  the-odds-api.com
-                </a>{" "}
-                to get your free API key
-              </div>
-            }
+        <Col flex="30px">
+          <Button
+            type="primary"
+            onClick={() => {
+              saveUserAPIKey(apiKey);
+              message.success("OddsAPI Key Updated!");
+            }}
+            style={{ marginLeft: "10px" }}
           >
-            <InfoCircleOutlined style={{ marginLeft: "5px" }} />
-          </Tooltip>
+            Save
+          </Button>
         </Col>
       </Row>
     </div>
