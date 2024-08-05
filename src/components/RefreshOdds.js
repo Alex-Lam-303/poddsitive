@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Progress, Button, Tooltip, message, Spin } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
 
-const OddsFormatSwitch = ({ refreshOddsDate, fetchOdds }) => {
+const OddsFormatSwitch = ({ refreshOddsDate, fetchOdds, demoMode }) => {
   const [fetchingOdds, setFetchingOdds] = useState(false);
 
   const timeLeft = refreshOddsDate.getTime() - Date.now();
@@ -68,7 +68,7 @@ const OddsFormatSwitch = ({ refreshOddsDate, fetchOdds }) => {
               height: "62px",
               width: "62px",
               transition: "transform 0.5s",
-              cursor: "pointer",
+              cursor: demoMode ? "not-allowed" : "pointer",
               boxShadow: "none",
             }}
             shape="circle"
@@ -88,6 +88,7 @@ const OddsFormatSwitch = ({ refreshOddsDate, fetchOdds }) => {
               e.currentTarget.querySelector("svg").style.transform =
                 "rotate(0deg)";
             }}
+            disabled={demoMode}
           />
         </div>
       )}

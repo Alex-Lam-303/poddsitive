@@ -80,7 +80,6 @@ export const loginWithEmailAndPassword = async (email, password) => {
       password
     );
     const user = userCredential.user;
-    console.log("User logged in with email:", user);
     return user; // Return user info if needed
   } catch (error) {
     console.error("Error logging in with email:", error);

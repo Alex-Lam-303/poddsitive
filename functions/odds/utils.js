@@ -1,17 +1,6 @@
-import { gradeMap } from "../constants/gradeMap";
-import { sportsMap } from "../constants/sportsMap";
-import { DateTime } from "luxon";
+const { gradeMap, sportsMap } = require("../constants");
 
-export const convertDecimalToAmericanOdds = (decimalOdds) => {
-  decimalOdds = parseFloat(decimalOdds);
-  if (decimalOdds >= 2.0) {
-    return "+" + String(Math.round((decimalOdds - 1) * 100));
-  } else {
-    return String(Math.round(-100 / (decimalOdds - 1)));
-  }
-};
-
-export const transformOdds = (oddsData) => {
+function transformOdds(oddsData) {
   return oddsData.map((odds) => {
     const sport = sportsMap[odds.sport_key];
     const last_updated = odds.last_update;
@@ -84,4 +73,6 @@ export const transformOdds = (oddsData) => {
       pick: pickNames,
     };
   });
-};
+}
+
+module.exports = { transformOdds };

@@ -1,14 +1,15 @@
 "use client";
 
 import React from "react";
-import { Layout, Menu, Col, Input, Row, Tooltip, Button } from "antd";
+import { Layout, Button, Tooltip } from "antd";
 import Image from "next/image";
 import poddsitiveLogo from "../assets/poddsitive_icons/dark_with_name.png";
 import { logoutOfPoddsitive } from "../firebase/auth";
+import { LogoutOutlined } from "@ant-design/icons";
 
 const { Header } = Layout;
 
-const AppHeader = () => {
+const AppHeader = ({ demoMode, handleToSignUp }) => {
   return (
     <Header
       style={{
@@ -25,7 +26,32 @@ const AppHeader = () => {
         layout="fixed"
         style={{ paddingRight: "10px", height: "100%", width: "auto" }}
       />
-      <Button onClick={() => logoutOfPoddsitive()}>Log out</Button>
+      {demoMode ? (
+        <>
+          <div style={{ color: "white" }}>
+            Last Updated:{" "}
+            {new Date().getHours() >= 17
+              ? `${new Date().toLocaleString("default", {
+                  month: "long",
+                })} ${new Date().getDate()}, ${new Date().getFullYear()} 5:00pm EST`
+              : `${new Date(Date.now() - 864e5).toLocaleString("default", {
+                  month: "long",
+                })} ${new Date(Date.now() - 864e5).getDate()}, ${new Date(
+                  Date.now() - 864e5
+                ).getFullYear()} 5:00:00pm EST`}
+          </div>
+          <Button onClick={() => handleToSignUp()} type="primary">
+            Sign Up
+          </Button>
+        </>
+      ) : (
+        <Tooltip title="Log out" placement="left">
+          <LogoutOutlined
+            onClick={() => logoutOfPoddsitive()}
+            style={{ color: "white", fontSize: "15px", paddingRight: "10px" }}
+          />
+        </Tooltip>
+      )}
       {/*  <Menu
         mode="horizontal"
         defaultSelectedKeys={["1"]}

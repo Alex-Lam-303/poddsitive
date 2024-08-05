@@ -11,6 +11,7 @@ import RefreshOdds from "../components/RefreshOdds";
 import OddsOptions from "../components/OddsOptions";
 import ApiKeyInput from "../components/ApiKeyInput";
 import localStorage from "local-storage";
+import { getDatabase, ref, get } from "firebase/database";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -55,7 +56,19 @@ class Dashboard extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.fetchDemoOdds();
+  }
+
   fetchOdds = async () => {
+    if (this.props.demoMode) {
+      this.fetchDemoOdds();
+    } else {
+      this.fetchLiveOdds();
+    }
+  };
+
+  fetchLiveOdds = async () => {
     try {
       const data = await getOdds(
         this.state.apiKey,
@@ -74,9 +87,22 @@ class Dashboard extends React.Component {
       );
     }
   };
-  componentDidMount() {
-    //this.fetchOdds();
-  }
+
+  fetchDemoOdds = async () => {
+    const db = getDatabase();
+    const demoRef = ref(db, "demo");
+    try {
+      const snapshot = await get(demoRef);
+      if (snapshot.exists()) {
+        const demoData = snapshot.val();
+        this.setState({ odds: demoData });
+      } else {
+        return null;
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
 
   onChangeShownColumns = (value) => {
     this.setState({ shownColumns: value });
@@ -143,6 +169,7 @@ class Dashboard extends React.Component {
                   <RefreshOdds
                     fetchOdds={this.fetchOdds}
                     refreshOddsDate={this.state.refreshOddsDate}
+                    demoMode={this.props.demoMode}
                   />
                 </Col>
               </Row>

@@ -6,10 +6,10 @@ import Dashboard from "./Dashboard";
 
 const { Content } = Layout;
 
-const AppContent = () => {
+const AppContent = ({ demoMode }) => {
   return (
     <Content>
-      <Dashboard />
+      <Dashboard demoMode={demoMode} />
     </Content>
   );
 };

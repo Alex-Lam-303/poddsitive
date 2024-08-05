@@ -10,7 +10,16 @@ import { onAuthStateChanged } from "firebase/auth";
 
 const Poddsitive = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const [demoMode, setDemoMode] = useState(false);
   const [user, setUser] = useState(null);
+
+  const handleSetDemoMode = () => {
+    setDemoMode(true);
+  };
+
+  const handleToSignUp = () => {
+    setDemoMode(false);
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -22,7 +31,7 @@ const Poddsitive = () => {
   }, []);
 
   if (!isMounted) return <Spin />;
-  if (user) {
+  if (user || demoMode) {
     return (
       <ConfigProvider
         theme={{
@@ -33,13 +42,17 @@ const Poddsitive = () => {
         }}
       >
         <App>
-          <AppHeader style={{ height: "10vh" }} />
-          <AppContent style={{ height: "90vh" }} />
+          <AppHeader
+            style={{ height: "10vh" }}
+            demoMode={demoMode}
+            handleToSignUp={handleToSignUp}
+          />
+          <AppContent style={{ height: "90vh" }} demoMode={demoMode} />
         </App>
       </ConfigProvider>
     );
   } else {
-    return <LoginPage />;
+    return <LoginPage setDemoMode={handleSetDemoMode} />;
   }
 };
 

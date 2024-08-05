@@ -2,7 +2,7 @@ const sqlite3 = require("sqlite3").verbose();
 
 function processDataToSQL(data) {
   return new Promise((resolve, reject) => {
-    const db = new sqlite3.Database(":memory:"); // Use in-memory database
+    const db = new sqlite3.Database(":memory:");
 
     db.serialize(() => {
       // Create the events table
