@@ -42,9 +42,9 @@ class MainTable extends Component {
   ];
 
   get sportsbookColumns() {
-    return this.sportsbooks.map(({ icon, alt, dataIndex }) => ({
+    return this.sportsbooks.map(({ icon, alt, dataIndex }, index) => ({
       title: (
-        <Tooltip title={alt}>
+        <Tooltip title={alt} key={index}>
           <img className="sportsbook_icon" src={icon} alt={alt} />
         </Tooltip>
       ),
@@ -172,10 +172,10 @@ class MainTable extends Component {
         width: 65,
         fixed: !this.state.isMobile ? "left" : false,
         render: (text) =>
-          text.map((pick) => {
+          text.map((pick, index) => {
             const icon = sportsbookIconMap[pick];
             return icon ? (
-              <Tooltip title={pick}>
+              <Tooltip title={pick} key={index}>
                 <div>
                   <img className="sportsbook_icon" src={icon} alt={pick} />
                 </div>
@@ -244,8 +244,11 @@ class MainTable extends Component {
       >
         <Table
           columns={this.columns}
-          dataSource={this.props.odds}
-          rowKey="game_id"
+          dataSource={this.props.odds.map((odd) => ({
+            ...odd,
+            key: odd.line + odd.commence_datetime,
+          }))}
+          rowKey="key"
           pagination={{ pageSize: 50 }}
           scroll={{
             y: "60vh",

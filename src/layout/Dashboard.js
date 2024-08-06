@@ -47,8 +47,13 @@ class Dashboard extends React.Component {
         "betonline_ag",
       ],
       oddsOptions: {
-        sports: ["baseball_mlb"],
-        markets: ["h2h"],
+        sports: [
+          "baseball_mlb",
+          "americanfootball_nfl",
+          "basketball_nba",
+          "icehockey_nhl",
+        ],
+        markets: ["h2h", "spreads", "totals"],
         regions: "us",
         odds_format: "decimal",
         date_format: "iso",

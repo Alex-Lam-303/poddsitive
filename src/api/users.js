@@ -28,13 +28,18 @@ export const createUserInFirestore = async (email) => {
 
 export const saveUserAPIKey = async (apiKey) => {
   const user = getUser();
+  if (!user) {
+    throw new Error("User not found");
+  }
   const userRef = doc(db, "users.v1", user.email);
   await updateDoc(userRef, { token: apiKey });
 };
 
 export const getUserAPIKey = async () => {
-  console.log("Getting user API key");
   const user = getUser();
+  if (!user) {
+    return "";
+  }
   const userRef = doc(db, "users.v1", user.email);
   const userDoc = await getDoc(userRef);
   return userDoc.data().token;

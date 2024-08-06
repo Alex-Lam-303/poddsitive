@@ -50,9 +50,13 @@ const ApiKeyInput = ({ apiKey, onChangeAPIKey }) => {
         <Col flex="30px">
           <Button
             type="primary"
-            onClick={() => {
-              saveUserAPIKey(apiKey);
-              message.success("OddsAPI Key Updated!");
+            onClick={async () => {
+              try {
+                await saveUserAPIKey(apiKey);
+                message.success("OddsAPI Key Updated!");
+              } catch (error) {
+                message.error("Please create an account to save your API key!");
+              }
             }}
             style={{ marginLeft: "10px" }}
           >
