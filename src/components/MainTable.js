@@ -236,7 +236,7 @@ class MainTable extends Component {
     return (
       <div
         style={{
-          marginLeft: "1%",
+          paddingLeft: "1%",
           width: "98%",
           overflow: "auto",
           height: "80%",

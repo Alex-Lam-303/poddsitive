@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Progress, Button, Tooltip, message, Spin } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
 
-const OddsFormatSwitch = ({ refreshOddsDate, fetchOdds, demoMode }) => {
+const RefreshOdds = ({ refreshOddsDate, fetchOdds, demoMode }) => {
   const [fetchingOdds, setFetchingOdds] = useState(false);
 
   const timeLeft = refreshOddsDate.getTime() - Date.now();
@@ -96,4 +96,4 @@ const OddsFormatSwitch = ({ refreshOddsDate, fetchOdds, demoMode }) => {
   );
 };
 
-export default OddsFormatSwitch;
+export default RefreshOdds;

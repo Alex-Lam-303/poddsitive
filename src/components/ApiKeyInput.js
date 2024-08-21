@@ -49,7 +49,6 @@ const ApiKeyInput = ({ apiKey, onChangeAPIKey }) => {
         </Col>
         <Col flex="30px">
           <Button
-            type="primary"
             onClick={async () => {
               try {
                 await saveUserAPIKey(apiKey);

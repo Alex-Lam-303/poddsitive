@@ -220,31 +220,29 @@ const LoginPage = ({ setDemoMode }) => {
               </Button>
             </>
           )}
-          {/* 
-        <Divider plain style={{ color: token.colorTextPlaceholder }}>
-          Other Login Methods
-        </Divider>
-        <Space align="center" size={24}>
-         
-          <div style={iconContainerStyle}>
-            <GoogleOutlined
-              onClick={() => signUpPoddsitive("google")}
-              style={iconStyles}
-            />
-          </div>
-          <div style={iconContainerStyle}>
-            <FacebookOutlined
-              onClick={() => signUpPoddsitive("facebook")}
-              style={iconStyles}
-            />
-          </div>
-          <div style={iconContainerStyle}>
-            <AppleOutlined
-              onClick={() => signUpPoddsitive("apple")}
-              style={iconStyles}
-            />
-          </div>
-        </Space> */}
+          {/* <Divider plain style={{ color: "#a9a9a9" }}>
+            Other Login Methods
+          </Divider>
+          <Space align="center" size={24}>
+            <div style={iconContainerStyle}>
+              <GoogleOutlined
+                onClick={() => signUpPoddsitive("google")}
+                style={iconStyles}
+              />
+            </div>
+            <div style={iconContainerStyle}>
+              <FacebookOutlined
+                onClick={() => signUpPoddsitive("facebook")}
+                style={iconStyles}
+              />
+            </div>
+            <div style={iconContainerStyle}>
+              <AppleOutlined
+                onClick={() => signUpPoddsitive("apple")}
+                style={iconStyles}
+              />
+            </div>
+          </Space> */}
           <p
             style={{
               color: "#a9a9a9",
@@ -285,7 +283,7 @@ const LoginPage = ({ setDemoMode }) => {
 export default LoginPage;
 
 const iconStyles = {
-  color: "#499824",
+  color: "white",
   fontSize: "18px",
   verticalAlign: "middle",
   cursor: "pointer",
@@ -294,6 +292,7 @@ const iconStyles = {
 const iconContainerStyle = {
   height: 40,
   width: 40,
+  backgroundColor: "black",
   border: "1px solid #499824",
   borderRadius: "50%",
   display: "flex",

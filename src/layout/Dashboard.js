@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Row, Col, message } from "antd";
+import { Row, Col, message, Button } from "antd";
 import { getOdds } from "../api/odds";
 import { transformOdds } from "../utils/oddsUtils";
 import MainTable from "../components/MainTable";
@@ -58,6 +58,7 @@ class Dashboard extends React.Component {
         odds_format: "decimal",
         date_format: "iso",
       },
+      isMobile: window.innerWidth <= 768,
     };
   }
 
@@ -132,6 +133,70 @@ class Dashboard extends React.Component {
   };
 
   render() {
+    if (this.state.isMobile) {
+      return (
+        <div
+          style={{
+            height: "20%",
+            padding: "5px",
+          }}
+        >
+          <Row>
+            <Col span={24}>
+              <Row style={{ marginLeft: 5, marginBottom: 10 }}>
+                <Col span={24}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <OddsFormatSwitch
+                      decimalOdds={this.state.decimalOdds}
+                      onChangeOddsFormat={this.onChangeOddsFormat}
+                    />
+                    <Button
+                      type="primary"
+                      size="medium"
+                      onClick={this.fetchOdds}
+                      disabled={this.props.demoMode}
+                    >
+                      Refresh Odds
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+              <ShownSelector
+                shownColumns={this.state.shownColumns}
+                shownSportsbooks={this.state.shownSportsbooks}
+                onChangeShownColumns={this.onChangeShownColumns}
+                onChangeShownSportsbooks={this.onChangeShownSportsbooks}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24} style={{ marginTop: 5 }}>
+              <OddsOptions
+                oddsOptions={this.state.oddsOptions}
+                onChangeOddOptions={this.onChangeOddOptions}
+              />
+              <ApiKeyInput
+                apiKey={this.state.apiKey}
+                onChangeAPIKey={this.onChangeAPIKey}
+              />
+            </Col>
+          </Row>
+          <MainTable
+            odds={this.state.odds}
+            shownColumns={this.state.shownColumns}
+            shownSportsbooks={this.state.shownSportsbooks}
+            decimalOdds={this.state.decimalOdds}
+          />
+        </div>
+      );
+    }
+
     return (
       <>
         <div
@@ -167,7 +232,7 @@ class Dashboard extends React.Component {
                     onChangeAPIKey={this.onChangeAPIKey}
                   />
                 </Col>
-                <Col span={4} style={{ marginTop: 45 }}>
+                <Col span={4} style={{ paddingTop: 45 }}>
                   <RefreshOdds
                     fetchOdds={this.fetchOdds}
                     refreshOddsDate={this.state.refreshOddsDate}
@@ -177,13 +242,14 @@ class Dashboard extends React.Component {
               </Row>
             </Col>
           </Row>
+
+          <MainTable
+            odds={this.state.odds}
+            shownColumns={this.state.shownColumns}
+            shownSportsbooks={this.state.shownSportsbooks}
+            decimalOdds={this.state.decimalOdds}
+          />
         </div>
-        <MainTable
-          odds={this.state.odds}
-          shownColumns={this.state.shownColumns}
-          shownSportsbooks={this.state.shownSportsbooks}
-          decimalOdds={this.state.decimalOdds}
-        />
       </>
     );
   }

@@ -28,7 +28,7 @@ const AppHeader = ({ demoMode, handleToSignUp }) => {
       />
       {demoMode ? (
         <>
-          <div style={{ color: "white" }}>
+          <div style={{ color: "white", height: "100%" }}>
             Last Updated:{" "}
             {new Date().getHours() >= 17
               ? `${new Date().toLocaleString("default", {
